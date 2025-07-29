@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup PHP
+      - name: 'Setup PHP'
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
@@ -48,7 +48,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup PHP
+      - name: 'Setup PHP'
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
@@ -75,7 +75,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup PHP
+      - name: 'Setup PHP'
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
@@ -92,8 +92,8 @@ jobs:
       - name: 'Run psalm'
         run: ./vendor/bin/psalm --no-cache
 
-  test:
-    name: 'Test'
+  tests:
+    name: 'Unit Tests'
     runs-on: ubuntu-latest
     environment: production
 
@@ -102,10 +102,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup PHP
+      - name: 'Setup PHP'
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
+          coverage: xdebug
 
       - name: 'Cache Composer packages'
         id: composer-cache
@@ -116,5 +117,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-php-
 
-      - name: 'Run tests'
-        run: php artisan test --parallel
+      - name: 'Run unit tests'
+        run: php artisan test --parallel --testsuite=Unit
+
+      - name: 'Run feature tests'
+        run: php artisan test --parallel --testsuite=Feature
+
+      - name: 'Check code coverage'
+        run: php artisan test --coverage --min=80
