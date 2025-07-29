@@ -92,12 +92,66 @@ jobs:
       - name: 'Run psalm'
         run: ./vendor/bin/psalm --no-cache
 
-  tests:
+  unit-tests:
     name: 'Unit Tests'
     runs-on: ubuntu-latest
     environment: production
 
     needs: [ pint, psalm ]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 'Setup PHP'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: 'Cache Composer packages'
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: 'Run unit tests'
+        run: php artisan test --parallel --testsuite=Unit
+
+  feature-tests:
+    name: 'Feature Tests'
+    runs-on: ubuntu-latest
+    environment: production
+
+    needs: [ pint, psalm ]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 'Setup PHP'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: 'Cache Composer packages'
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: 'Run feature tests'
+        run: php artisan test --parallel --testsuite=Feature
+
+  code-coverage:
+    name: 'Code coverage'
+    runs-on: ubuntu-latest
+    environment: production
+
+    needs: [ unit-tests, feature-tests ]
 
     steps:
       - uses: actions/checkout@v4
@@ -116,12 +170,6 @@ jobs:
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-php-
-
-      - name: 'Run unit tests'
-        run: php artisan test --parallel --testsuite=Unit
-
-      - name: 'Run feature tests'
-        run: php artisan test --parallel --testsuite=Feature
 
       - name: 'Check code coverage'
         run: php artisan test --coverage --min=80
