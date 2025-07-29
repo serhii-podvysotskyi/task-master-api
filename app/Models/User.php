@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
+ * @property string $password
  * @property ?Carbon $email_verified_at
  * @template-extends HasApiTokens<PersonalAccessToken>
  * @template-extends HasFactory<UserFactory>
