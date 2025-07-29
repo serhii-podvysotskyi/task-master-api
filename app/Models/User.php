@@ -11,11 +11,14 @@ use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @property ?Carbon $email_verified_at
+ * @template-extends HasApiTokens<PersonalAccessToken>
+ * @template-extends HasFactory<UserFactory>
  */
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
+    /** @use HasApiTokens<PersonalAccessToken> */
     use HasApiTokens;
+    /** @use HasFactory<UserFactory> */
     use HasFactory;
     use Notifiable;
 
@@ -54,6 +57,7 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+    #[\Override]
     protected function casts(): array
     {
         return [

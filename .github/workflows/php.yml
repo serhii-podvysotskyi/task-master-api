@@ -55,12 +55,34 @@ jobs:
       - name: 'Run pint'
         run: ./vendor/bin/pint --test --parallel
 
+  psalm:
+    name: 'Psalm'
+    runs-on: ubuntu-latest
+    environment: production
+
+    needs: [ build ]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 'Cache Composer packages'
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: 'Run psalm'
+        run: ./vendor/bin/psalm --no-cache
+
   test:
     name: 'Test'
     runs-on: ubuntu-latest
     environment: production
 
-    needs: [ build ]
+    needs: [ pint, psalm ]
 
     steps:
       - uses: actions/checkout@v4
