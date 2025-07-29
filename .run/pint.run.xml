@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="pint" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/vendor/bin/pint" scriptParameters="--parallel">
+    <CommandLine workingDirectory="$PROJECT_DIR$" />
     <method v="2" />
   </configuration>
 </component>
