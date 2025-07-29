@@ -53,4 +53,26 @@ jobs:
             ${{ runner.os }}-php-
 
       - name: 'Run pint'
-        run: ./vendor/bin/pint --test
+        run: ./vendor/bin/pint --test --parallel
+
+  test:
+    name: 'Test'
+    runs-on: ubuntu-latest
+    environment: production
+
+    needs: [ build ]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 'Cache Composer packages'
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: 'Run tests'
+        run: php artisan test --parallel
