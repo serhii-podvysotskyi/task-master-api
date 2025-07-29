@@ -4,7 +4,7 @@ echo "Running Laravel Pint..."
 ./vendor/bin/pint --test
 
 echo "Running Psalm..."
-./vendor/bin/psalm --threads=8 --no-cache
+./vendor/bin/psalm --threads=4 --no-cache
 
 echo "Running Tests..."
-php artisan test --parallel
+php artisan test --coverage --min=80
