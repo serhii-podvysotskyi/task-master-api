@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Support\Facades\Auth;
 
 class LogoutController extends Controller implements HasMiddleware
 {
@@ -27,8 +26,6 @@ class LogoutController extends Controller implements HasMiddleware
      */
     public function __invoke(): JsonResponse
     {
-        Auth::logout();
-
         Session::invalidate();
         Session::regenerateToken();
 
