@@ -1,0 +1,43 @@
+services:
+    php:
+        build:
+            context: ./docker
+            target: base
+        image: task-master-php
+        networks:
+            - task-master
+        volumes:
+            - ./:/app
+        command: [ 'composer', 'install', '--no-dev' ]
+
+    api:
+        image: task-master-php
+        depends_on:
+            - php
+        restart: on-failure
+        networks:
+            - task-master
+        volumes:
+            - ./:/app
+        ports:
+            - '8000:8000'
+        healthcheck:
+            test: [ "CMD", "curl", "-f", "http://127.0.0.1:8000/status" ]
+            retries: 6
+            timeout: 5s
+        entrypoint: [ 'php', 'artisan', 'serve', '--host=0.0.0.0', '--port=8000' ]
+
+    schedule:
+        image: task-master-php
+        depends_on:
+            - php
+        restart: on-failure
+        networks:
+            - task-master
+        volumes:
+            - ./:/app
+        entrypoint: [ 'php', 'artisan', 'schedule:work' ]
+
+networks:
+    task-master:
+        driver: bridge
