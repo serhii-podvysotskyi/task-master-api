@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Providers;
+
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
+use Laravel\Horizon\HorizonApplicationServiceProvider;
+
+class PulseServiceProvider extends HorizonApplicationServiceProvider
+{
+    /**
+     * Register the Horizon gate.
+     *
+     * This gate determines who can access Horizon in non-local environments.
+     */
+    #[\Override]
+    protected function gate(): void
+    {
+        Gate::define('viewPulse', static function (?User $user = null) {
+            return ! is_null($user);
+        });
+    }
+}

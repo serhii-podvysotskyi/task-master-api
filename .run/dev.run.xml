@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="dev" type="CompoundRunConfigurationType">
+    <toRun name="horizon" type="PhpLocalRunConfigurationType" />
     <toRun name="pail" type="PhpLocalRunConfigurationType" />
-    <toRun name="queue:listen" type="PhpLocalRunConfigurationType" />
     <toRun name="serve" type="PhpLocalRunConfigurationType" />
     <method v="2" />
   </configuration>

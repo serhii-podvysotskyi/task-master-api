@@ -1,0 +1,24 @@
+services:
+  php:
+    build:
+      target: dev
+    image: task-master-php:dev
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    environment:
+      - PHP_IDE_CONFIG=serverName=task-master
+    command: [ 'composer', 'install' ]
+
+  api:
+    image: task-master-php:dev
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    environment:
+      - PHP_IDE_CONFIG=serverName=task-master
+
+  schedule:
+    image: task-master-php:dev
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    environment:
+      - PHP_IDE_CONFIG=serverName=task-master

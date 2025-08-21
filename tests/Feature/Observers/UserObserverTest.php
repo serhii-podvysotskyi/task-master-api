@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Observers;
+namespace Tests\Feature\Observers;
 
 use App\Models\User;
 use Tests\Feature\TestCase;
